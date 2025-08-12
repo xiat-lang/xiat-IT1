@@ -1,12 +1,11 @@
 .test {
     *main;
     =msg "Hello, World!"
-    whome;
 }
 .main {
     =msg;
     echo $msg; 
     call test;
-    whome;
+    echo $msg; 
 }
 
