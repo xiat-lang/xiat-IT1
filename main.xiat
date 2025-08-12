@@ -1,10 +1,10 @@
-.test {
-    *main;
-    =msg "Hello, World!"
+.outer {
+    =testmsg "hello";
+    echo $testmsg;
 }
 .main {
-    =msg;
-    echo $msg; 
-    call test;
-    echo $msg; 
+    =testmsg;
+    call outer;
+    echo $testmsg;
 }
+

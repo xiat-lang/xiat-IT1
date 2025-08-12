@@ -52,7 +52,6 @@ def run(tokens):
     i = region['main'][0]
     ptr = '???'
     while i < len(tokens):
-        #print(region)
         if tokens[i] == 'whome': 
             if tokens[i+1] == '*':
                 print('* ->', ptr)
@@ -62,18 +61,22 @@ def run(tokens):
         elif tokens[i] == '}': i, current = stack.pop()
         elif tokens[i] == '=':
             varname, value = tokens[i+1], tokens[i+2]
-            if value == ';': value='???'
+            if value == ';': 
+                value = '???'  # Default value if not provided
             if ptr != '???':
                 region[ptr][1][varname] = value
             else:
                 region[current][1][varname] = value
             i += 2
-        elif tokens[i] == '*':
+
+            i += 2
+        elif tokens[i] == '#':
             ptr = tokens[i+1]
             i += 1
         elif tokens[i] == 'call':
-            stack.append((i, current))
-            current, i = tokens[i+1], region[tokens[i+1]][0]
+            stack.append((i, current))  # Save current position and context
+            current = tokens[i+1]  # Switch to the new function context
+            i = region[current][0]
         elif tokens[i] == 'echo':
             i += 1
             r = ""
@@ -87,6 +90,15 @@ def run(tokens):
                     r += tokens[i]
                 i += 1
             print(r.replace('"', ''))
+        elif tokens[i] == 'read':
+            if tokens[i+1] != '$': break
+            varname = tokens[i+2]
+            value = input('').replace('\r', '')
+            if ptr != '???':
+                region[ptr][1][varname] = value
+            else:
+                region[current][1][varname] = value
+            i += 2
         i += 1
 if __name__ == '__main__':
     program = readf(sys.argv[1])
