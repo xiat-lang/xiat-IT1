@@ -8,4 +8,3 @@
     call test;
     echo $msg; 
 }
-
